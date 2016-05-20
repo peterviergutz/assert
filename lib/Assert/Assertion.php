@@ -1584,7 +1584,7 @@ class Assertion
                 self::stringify($property)
             );
 
-            throw static::createException($value, $message, static::INVALID_PROPERTY_EXISTS, $propertyPath, array('property' => $property));
+            throw static::createException($property, $message, static::INVALID_PROPERTY_EXISTS, $propertyPath, array('property' => $property));
         }
     }
 

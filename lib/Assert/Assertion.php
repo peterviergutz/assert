@@ -194,6 +194,7 @@ class Assertion
     const INVALID_GREATER_OR_EQUAL  = 212;
     const INVALID_DATE              = 213;
     const INVALID_PROPERTY_EXISTS   = 214;
+    const INVALID_CALLABLE          = 215;
 
     /**
      * Exception to throw when an assertion failed.
@@ -1563,28 +1564,49 @@ class Assertion
         }
     }
 
-
     /**
      * Assert that property exists on an object
      *
-     * @param mixed $value
      * @param mixed $object
+     * @param string $property
      * @param string|null $message
      * @param string|null $propertyPath
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function propertyExists($value, $object, $message = null, $propertyPath = null)
+    public static function propertyExists($object, $property, $message = null, $propertyPath = null)
     {
         static::isObject($object, $message, $propertyPath);
 
-        if ( ! property_exists($object, $value)) {
+        if ( ! property_exists($object, $property)) {
             $message = sprintf(
                 $message ?: 'Object does not contain property "%s"',
+                self::stringify($property)
+            );
+
+            throw static::createException($value, $message, static::INVALID_PROPERTY_EXISTS, $propertyPath, array('property' => $property));
+        }
+    }
+
+    /**
+     * Assert that a function exists on an array
+     *
+     * @param mixed $value
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return void
+     * @throws \Assert\AssertionFailedException
+     */
+    public static function isCallable($value, $message = null, $propertyPath = null)
+    {
+        if (!is_callable($value)) {
+            $message = sprintf(
+                $message ?: 'Provided "%s" is not callable.',
                 self::stringify($value)
             );
 
-            throw static::createException($value, $message, static::INVALID_PROPERTY_EXISTS, $propertyPath, array('property' => $value));
+            throw static::createException($value, $message, static::INVALID_CALLABLE, $propertyPath);
+
         }
     }
 

@@ -973,7 +973,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         $obj = new \StdClass();
         $obj->foo = "bar";
 
-        Assertion::propertyExists("bar", $obj);
+        Assertion::propertyExists($obj, "bar");
     }
 
     public function testValidPropertyExists()
@@ -981,7 +981,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         $obj = new \StdClass();
         $obj->foo = "bar";
 
-        Assertion::propertyExists("foo", $obj);
+        Assertion::propertyExists($obj, "foo");
     }
 
     /**

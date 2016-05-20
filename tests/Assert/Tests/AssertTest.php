@@ -966,6 +966,24 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         Assertion::methodExists('methodExists', new Assertion());
     }
 
+    public function testInvalidPropertyExists()
+    {
+        $this->setExpectedException('Assert\AssertionFailedException', null, Assertion::INVALID_PROPERTY_EXISTS);
+
+        $obj = new \StdClass();
+        $obj->foo = "bar";
+
+        Assertion::propertyExists("bar", $obj);
+    }
+
+    public function testValidPropertyExists()
+    {
+        $obj = new \StdClass();
+        $obj->foo = "bar";
+
+        Assertion::propertyExists("foo", $obj);
+    }
+
     /**
      * @test
      */

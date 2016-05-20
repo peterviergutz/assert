@@ -193,6 +193,7 @@ class Assertion
     const INVALID_GREATER           = 212;
     const INVALID_GREATER_OR_EQUAL  = 212;
     const INVALID_DATE              = 213;
+    const INVALID_PROPERTY_EXISTS   = 214;
 
     /**
      * Exception to throw when an assertion failed.
@@ -1559,6 +1560,31 @@ class Assertion
 
             throw static::createException($value, $message, static::INVALID_OBJECT, $propertyPath);
 
+        }
+    }
+
+
+    /**
+     * Assert that property exists on an object
+     *
+     * @param mixed $value
+     * @param mixed $object
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return void
+     * @throws \Assert\AssertionFailedException
+     */
+    public static function propertyExists($value, $object, $message = null, $propertyPath = null)
+    {
+        static::isObject($object, $message, $propertyPath);
+
+        if ( ! property_exists($object, $value)) {
+            $message = sprintf(
+                $message ?: 'Object does not contain property "%s"',
+                self::stringify($value)
+            );
+
+            throw static::createException($value, $message, static::INVALID_PROPERTY_EXISTS, $propertyPath, array('property' => $value));
         }
     }
 
